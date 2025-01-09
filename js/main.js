@@ -19,16 +19,13 @@ function weather(lat, long) {
     fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}\
 &current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation_probability,weather_code\
-&&timeformat=unixtime`
+&timeformat=unixtime`
     ).then(
         (response) => (response.json())
     ).then(
         (data) => {
             console.log("DEBUG: tried to fetch updated weather data")
             weatherdata = data.current;
-            console.log(weatherdata);
-            //weatherdata.hourly_precipitation_probability = data.hourly.precipitation_probability;
-            console.log(weatherdata);
             localStorage.setItem("weatherdata", JSON.stringify(weatherdata));
             displayweather(weatherdata);
         }
@@ -57,3 +54,12 @@ if ("geolocation" in navigator) {
 else {
     console.log("WARNING: geolocation not available in navigator");
 }
+
+setInterval(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+        weather(
+            round(position.coords.latitude, 2),
+            round(position.coords.longitude, 2)
+        );
+    });
+}, REFRESHTIME * 1000);
