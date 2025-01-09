@@ -55,6 +55,7 @@ else {
     console.log("WARNING: geolocation not available in navigator");
 }
 
+// refresh every REFRESHTIME seconds and ping the API
 setInterval(() => {
     navigator.geolocation.getCurrentPosition((position) => {
         weather(
@@ -63,3 +64,8 @@ setInterval(() => {
         );
     });
 }, REFRESHTIME * 1000);
+
+// if another tab updates, display the update
+addEventListener("storage", (event) => {
+    displayweather(JSON.parse(localStorage.getItem("weatherdata")));
+});
