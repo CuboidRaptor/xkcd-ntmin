@@ -3,6 +3,7 @@ function round(n, d) {
 }
 
 let weatherdata;
+const REFRESHTIME = 60 * 30 // time in seconds of weather refresh, default is half an hour
 
 function displayweather(wobj) {
     console.log(wobj);
@@ -26,7 +27,7 @@ function weather(lat, long) {
 if ("geolocation" in navigator) {
     weatherdata = JSON.parse(localStorage.getItem("xkcd-ntmin-wd"));
 
-    if (weatherdata === null) {
+    if ((weatherdata === null) || (weatherdata.time <= ((Date.now() / 1000) - REFRESHTIME))) {
         navigator.geolocation.getCurrentPosition((position) => {
             weather(
                 round(position.coords.latitude, 2),
