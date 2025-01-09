@@ -5,27 +5,30 @@ function round(n, d) {
 const REFRESHTIME = 60 * 30 // time in seconds of weather refresh, default is half an hour
 
 function displayweather(weatherdata) {
-    let feelslike = document.getElementById("feelslike"); // display p's based on font size
+    let feelslike = document.getElementById("wmo"); // display p's based on font size
     let other = document.getElementById("other");
+    let icon = document.getElementById("wmoicon");
+    let curwmo = wcjson[weatherdata.weather_code][{0: "night", 1: "day"}[weatherdata.is_day]]; // wcjson is from wmocodes.js
 
-    feelslike.innerHTML = `Feels like <b>${weatherdata.apparent_temperature}°</b>`
-    other.innerHTML = `Temp: <b>${weatherdata.temperature_2m}°</b><br>
+    feelslike.innerHTML = `${curwmo.description}`
+    other.innerHTML = `Feels like <b>${weatherdata.apparent_temperature}°</b><br>
+Temp: <b>${weatherdata.temperature_2m}°</b><br>
 Humidity: <b>${weatherdata.relative_humidity_2m}%</b><br>
-Wind Speed: <b>${weatherdata.wind_speed_10m} km/h</b><br>
 Chance of Rain: <b>${weatherdata.precipitation_probability}%</b><br>`
+    icon.src = curwmo.image;
 }
 
 function weather(lat, long) {
     fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}\
-&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation_probability,weather_code\
-&timeformat=unixtime`
+&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,is_day\
+&daily=sunrise,sunset&timeformat=unixtime&timezone=auto&forecast_days=1`
     ).then(
         (response) => (response.json())
     ).then(
         (data) => {
-            console.log("DEBUG: tried to fetch updated weather data")
-            weatherdata = data.current;
+            console.log("DEBUG: tried to fetch updated weather data");
+            weatherdata = {...data.current, ...data.daily};
             localStorage.setItem("weatherdata", JSON.stringify(weatherdata));
             displayweather(weatherdata);
         }
