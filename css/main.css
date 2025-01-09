@@ -3,6 +3,13 @@ body {
     background-image: linear-gradient(160deg, #b92b27, #1465c0);
 }
 
+@font-face {
+    font-family: "KantumruyProRegular";
+    src: url("../fonts/KantumruyPro-Regular.ttf");
+}
+
 .weather {
     color: white;
+    font-family: "KantumruyProRegular";
+    font-size: 14;
 }
