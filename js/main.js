@@ -5,19 +5,30 @@ function round(n, d) {
 const REFRESHTIME = 60 * 30 // time in seconds of weather refresh, default is half an hour
 
 function displayweather(weatherdata) {
-    let weatherelem = document.getElementById("weather");
-    weatherelem.innerHTML = `Feels like ${weatherdata.apparent_temperature}°`
+    let feelslike = document.getElementById("feelslike"); // display p's based on font size
+    let other = document.getElementById("other");
+
+    feelslike.innerHTML = `Feels like <b>${weatherdata.apparent_temperature}°</b>`
+    other.innerHTML = `Temp: <b>${weatherdata.temperature_2m}°</b><br>
+Humidity: <b>${weatherdata.relative_humidity_2m}%</b><br>
+Wind Speed: <b>${weatherdata.wind_speed_10m} km/h</b><br>
+Chance of Rain: <b>${weatherdata.precipitation_probability}%</b><br>`
 }
 
 function weather(lat, long) {
     fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}\
-&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&timeformat=unixtime`
+&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation_probability,weather_code\
+&&timeformat=unixtime`
     ).then(
         (response) => (response.json())
     ).then(
         (data) => {
+            console.log("DEBUG: tried to fetch updated weather data")
             weatherdata = data.current;
+            console.log(weatherdata);
+            //weatherdata.hourly_precipitation_probability = data.hourly.precipitation_probability;
+            console.log(weatherdata);
             localStorage.setItem("weatherdata", JSON.stringify(weatherdata));
             displayweather(weatherdata);
         }
@@ -44,5 +55,5 @@ if ("geolocation" in navigator) {
     }
 }
 else {
-    console.log("geolocation not available in navigator");
+    console.log("WARNING: geolocation not available in navigator");
 }
