@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap');
 
 body {
     background-attachment: fixed;
@@ -8,10 +8,11 @@ body {
 
 .weather {
     color: white;
-    font-family: "Kantumruy Pro";
-    font-size: 16px;
     margin: 10px;
+    font-family: "Afacad Flux";
+    font-size: 16px;
     line-height: 160%;
+    letter-spacing: 0.5px;
 }
 
 #wmo {

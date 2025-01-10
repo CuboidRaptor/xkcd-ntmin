@@ -15,7 +15,7 @@ function displayweather(weatherdata) {
 Temp: <b>${weatherdata.temperature_2m}°</b><br>
 Humidity: <b>${weatherdata.relative_humidity_2m}%</b><br>
 Chance of Rain: <b>${weatherdata.precipitation_probability}%</b><br>`
-    icon.src = curwmo.image;
+    icon.src = "https://openweathermap.org/img/wn/" + curwmo.image;
 }
 
 function weather(lat, long) {
