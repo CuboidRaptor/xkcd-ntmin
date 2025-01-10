@@ -27,15 +27,6 @@ body {
     height: 64px;
 }
 
-#wmoicon {
-    width: auto;
-    height: 64px;
-}
-
-#other {
-    margin-top: 0px;
-}
-
 #xkcdflexdiv {
     position: fixed;
     left: 0;
