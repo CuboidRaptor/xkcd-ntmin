@@ -23,7 +23,8 @@ function weather(lat, long) {
     fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}\
 &current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,is_day\
-&daily=sunrise,sunset&timeformat=unixtime&timezone=auto&forecast_days=1`
+&daily=sunrise,sunset&timeformat=unixtime&timezone=auto&forecast_days=1`,
+        {"keepalive": true}
     ).then(
         (response) => (response.json())
     ).then(
