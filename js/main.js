@@ -19,6 +19,7 @@ Chance of Rain: <b>${weatherdata.precipitation_probability}%</b><br>`
 }
 
 function weather(lat, long) {
+    console.log("DEBUG: trying to fetch updated weather data");
     fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}\
 &current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,is_day\
@@ -27,7 +28,6 @@ function weather(lat, long) {
         (response) => (response.json())
     ).then(
         (data) => {
-            console.log("DEBUG: tried to fetch updated weather data");
             weatherdata = {...data.current, ...data.daily};
             localStorage.setItem("weatherdata", JSON.stringify(weatherdata));
             displayweather(weatherdata);
