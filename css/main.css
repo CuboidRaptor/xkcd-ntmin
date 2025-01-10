@@ -35,3 +35,22 @@ body {
 #other {
     margin-top: 0px;
 }
+
+#xkcdflexdiv {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#xkcddiv {
+    max-height: 780px;
+    overflow-y: auto;
+    text-align: center;
+    font-family: "Afacad Flux";
+    letter-spacing: 0.1em;
+}
