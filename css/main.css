@@ -6,13 +6,13 @@ body {
     font-family: Helvetica;
 }
 
-.weather {
+#weather {
     color: white;
     margin: 10px;
     font-family: "Afacad Flux";
     font-size: 16px;
     line-height: 160%;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.1em;
 }
 
 #wmo {
