@@ -42,38 +42,37 @@ function weather(lat, long) {
     )
 }
 
-if ("geolocation" in navigator) {
-    let weatherdata = JSON.parse(localStorage.getItem("weatherdata"));
+function checkWeather() {
+    // check if weather cached, otherwise fetch new
+    if ("geolocation" in navigator) {
+        let weatherdata = JSON.parse(localStorage.getItem("weatherdata"));
 
-    if ((weatherdata === null) || (weatherdata.time <= ((Date.now() / 1000) - REFRESHTIME))) { // old or missing data
-        if (weatherdata !== null) {
-            displayweather(weatherdata); // display previously cached data if available
+        if ((weatherdata === null) || (weatherdata.time <= ((Date.now() / 1000) - REFRESHTIME))) { // old or missing data
+            if (weatherdata !== null) {
+                displayweather(weatherdata); // display previously cached data if available
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition((position) => {
+                weather(
+                    round(position.coords.latitude, 2),
+                    round(position.coords.longitude, 2)
+                );
+            });
         }
-
-        navigator.geolocation.getCurrentPosition((position) => {
-            weather(
-                round(position.coords.latitude, 2),
-                round(position.coords.longitude, 2)
-            );
-        });
+        else {
+            displayweather(weatherdata); // display cached data
+        }
     }
     else {
-        displayweather(weatherdata); // display cached data
+        console.log("WARNING: geolocation not available in navigator");
     }
 }
-else {
-    console.log("WARNING: geolocation not available in navigator");
-}
 
-// refresh every REFRESHTIME seconds and ping the API
-setInterval(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-        weather(
-            round(position.coords.latitude, 2),
-            round(position.coords.longitude, 2)
-        );
-    });
-}, REFRESHTIME * 1000);
+checkWeather();
+
+// refresh every REFRESHTIME seconds and ping the API if necessary
+setInterval(checkWeather, REFRESHTIME * 1000);
 
 // if another tab updates, display the update
 addEventListener("storage", (event) => {
