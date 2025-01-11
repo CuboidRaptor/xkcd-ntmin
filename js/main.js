@@ -2,7 +2,7 @@ function round(n, d) {
     return Math.round((n + Number.EPSILON) * (10 ** d)) / (10 ** d);
 }
 
-const REFRESHTIME = 60 * 30 // time in seconds of weather refresh, default is half an hour
+const REFRESHTIME = 60 * 30; // time in seconds of weather refresh, default is half an hour
 
 function displayweather(weatherdata) {
     let feelslike = document.getElementById("wmo"); // display p's based on font size
@@ -28,9 +28,9 @@ function weather(lat, long) {
     ).then(
         (response) => {
             if (!response.ok) {
-                throw new Error(`Weather API fetch failed with status ${res.status}`)
+                throw new Error(`Weather API fetch failed with status ${res.status}`);
             }
-            return response.json()
+            return response.json();
         }
     ).then(
         (data) => {
