@@ -24,11 +24,11 @@ function weather(lat, long) {
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}\
 &current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,is_day\
 &daily=sunrise,sunset&timeformat=unixtime&timezone=auto&forecast_days=1`,
-        {"keepalive": true}
+        {keepalive: true}
     ).then(
         (response) => {
             if (!response.ok) {
-                throw new Error(`Weather API fetch failed with status ${res.status}`);
+                throw new Error(`Weather API fetch failed with status ${response.status}`);
             }
             return response.json();
         }
