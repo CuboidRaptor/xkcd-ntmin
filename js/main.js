@@ -26,7 +26,12 @@ function weather(lat, long) {
 &daily=sunrise,sunset&timeformat=unixtime&timezone=auto&forecast_days=1`,
         {"keepalive": true}
     ).then(
-        (response) => (response.json())
+        (response) => {
+            if (!response.ok) {
+                throw new Error(`Weather API fetch failed with status ${res.status}`)
+            }
+            return response.json()
+        }
     ).then(
         (data) => {
             weatherdata = {...data.current, ...data.daily};
