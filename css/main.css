@@ -4,10 +4,10 @@ body {
     background-attachment: fixed;
     background-image: linear-gradient(160deg, #b92b27, #1465c0);
     font-family: Helvetica;
+    color: white;
 }
 
 #weather {
-    color: white;
     margin: 10px;
     font-family: "Afacad Flux";
     font-size: 16px;
@@ -17,7 +17,7 @@ body {
 
 #wmo {
     font-size: 36px;
-    vertical-align: middle;
+    vertical-align: middle; /* line up the desc with the icon */
     display: inline-block;
 }
 
@@ -28,7 +28,7 @@ body {
 }
 
 #xkcdflexdiv {
-    position: fixed;
+    position: fixed; /* fullscreen so we can center comics both ways */
     left: 0;
     right: 0;
     top: 0;
@@ -36,7 +36,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    pointer-events: none;
+    pointer-events: none; /* click through so weather data is selectable */
 }
 
 #xkcddiv {
@@ -46,4 +46,9 @@ body {
     font-family: "Afacad Flux";
     letter-spacing: 0.1em;
     pointer-events: auto;
+}
+
+#xkcddiv > * {
+    /* centre comic stuff */
+    margin: 0 auto;
 }
