@@ -55,10 +55,12 @@ function checkWeather() {
 
     let weatherdata = JSON.parse(localStorage.getItem("weatherdata"));
 
-    if ((weatherdata !== null) && (weatherdata.time > (Date.now() / 1000 - REFRESHTIME))) {
+    if (weatherdata !== null) {
         // data exists and is recent
         displayweather(weatherdata); // display cached data
-        return;
+        if (weatherdata.time > (Date.now() / 1000 - REFRESHTIME)) {
+            return;
+        }
     }
 
     document.getElementById("updating").innerHTML = "Updating...";
