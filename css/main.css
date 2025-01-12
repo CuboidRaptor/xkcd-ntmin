@@ -40,12 +40,12 @@ body {
 }
 
 #xkcddiv {
+    pointer-events: auto;
     max-height: 780px;
     overflow-y: auto;
     text-align: center;
     font-family: "Afacad Flux";
     letter-spacing: 0.1em;
-    pointer-events: auto;
 }
 
 #xkcddiv > * {
