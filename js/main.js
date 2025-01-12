@@ -16,6 +16,7 @@ Temp: <b>${weatherdata.temperature_2m}°</b><br>
 Humidity: <b>${weatherdata.relative_humidity_2m}%</b><br>
 Chance of Rain: <b>${weatherdata.precipitation_probability}%</b><br>`
     icon.src = "https://openweathermap.org/img/wn/" + curwmo.image;
+    document.getElementById("updating").innerHTML = ""; // remove updating symbol if it exists
     console.log("DEBUG: Weather display refreshed");
 }
 
@@ -38,7 +39,7 @@ function weather(lat, long) {
             weatherdata = {...data.daily, ...data.current};
             localStorage.setItem("weatherdata", JSON.stringify(weatherdata));
             displayweather(weatherdata);
-            console.log("DEBUG: Weather data fetched!")'
+            console.log("DEBUG: Weather data fetched!");
             console.log(`DEBUG: Weather data last updated at ${weatherdata.time}`);
         }
     )
@@ -60,6 +61,7 @@ function checkWeather() {
         return;
     }
 
+    document.getElementById("updating").innerHTML = "Updating...";
     navigator.geolocation.getCurrentPosition((position) => {
         weather(
             round(position.coords.latitude, 2),
