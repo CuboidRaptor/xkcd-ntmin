@@ -16,6 +16,7 @@ Temp: <b>${weatherdata.temperature_2m}°</b><br>
 Humidity: <b>${weatherdata.relative_humidity_2m}%</b><br>
 Chance of Rain: <b>${weatherdata.precipitation_probability}%</b><br>`
     icon.src = "https://openweathermap.org/img/wn/" + curwmo.image;
+    console.log("DEBUG: Weather display refreshed");
 }
 
 function weather(lat, long) {
@@ -37,36 +38,34 @@ function weather(lat, long) {
             weatherdata = {...data.daily, ...data.current};
             localStorage.setItem("weatherdata", JSON.stringify(weatherdata));
             displayweather(weatherdata);
-            console.log(`Weather data last updated at ${weatherdata.time}`);
+            console.log("DEBUG: Weather data fetched!")'
+            console.log(`DEBUG: Weather data last updated at ${weatherdata.time}`);
         }
     )
 }
 
 function checkWeather() {
     // check if weather cached, otherwise fetch new
-    if ("geolocation" in navigator) {
-        let weatherdata = JSON.parse(localStorage.getItem("weatherdata"));
-
-        if ((weatherdata === null) || (weatherdata.time <= ((Date.now() / 1000) - REFRESHTIME))) { // old or missing data
-            if (weatherdata !== null) {
-                displayweather(weatherdata); // display previously cached data if available
-                return;
-            }
-
-            navigator.geolocation.getCurrentPosition((position) => {
-                weather(
-                    round(position.coords.latitude, 2),
-                    round(position.coords.longitude, 2)
-                );
-            });
-        }
-        else {
-            displayweather(weatherdata); // display cached data
-        }
-    }
-    else {
+    if (!("geolocation" in navigator)) {
+        // geolocation unavailable
         console.log("WARNING: geolocation not available in navigator");
+        return;
     }
+
+    let weatherdata = JSON.parse(localStorage.getItem("weatherdata"));
+
+    if ((weatherdata !== null) && (weatherdata.time > (Date.now() / 1000 - REFRESHTIME))) {
+        // data exists and is recent
+        displayweather(weatherdata); // display cached data
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        weather(
+            round(position.coords.latitude, 2),
+            round(position.coords.longitude, 2)
+        );
+    });
 }
 
 checkWeather();
@@ -77,4 +76,5 @@ setInterval(checkWeather, REFRESHTIME * 1000);
 // if another tab updates, display the update
 addEventListener("storage", (event) => {
     displayweather(JSON.parse(localStorage.getItem("weatherdata")));
+    console.log("DEBUG: localStorage changed detected, data synced");
 });
