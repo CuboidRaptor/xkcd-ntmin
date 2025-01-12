@@ -7,6 +7,7 @@ const REFRESHTIME = 60 * 30; // time in seconds of weather refresh, default is h
 function displayweather(weatherdata) {
     let feelslike = document.getElementById("wmo"); // display p's based on font size
     let other = document.getElementById("other");
+    let iconspan = document.getElementById("wmoiconspan");
     let icon = document.getElementById("wmoicon");
     let curwmo = wcjson[weatherdata.weather_code][{0: "night", 1: "day"}[weatherdata.is_day]]; // wcjson is from wmocodes.js
 
@@ -15,6 +16,7 @@ function displayweather(weatherdata) {
 Temp: <b>${weatherdata.temperature_2m}°</b><br>
 Humidity: <b>${weatherdata.relative_humidity_2m}%</b><br>
 Chance of Rain: <b>${weatherdata.precipitation_probability}%</b><br>`
+    iconspan.style.height = "64px"
     icon.src = "https://openweathermap.org/img/wn/" + curwmo.image;
     document.getElementById("updating").innerHTML = ""; // remove updating symbol if it exists
     console.log("DEBUG: Weather display refreshed");
@@ -79,6 +81,6 @@ setInterval(checkWeather, REFRESHTIME * 1000);
 
 // if another tab updates, display the update
 addEventListener("storage", (event) => {
+    console.log("DEBUG: localStorage changed detected, syncing data...");
     displayweather(JSON.parse(localStorage.getItem("weatherdata")));
-    console.log("DEBUG: localStorage changed detected, data synced");
 });

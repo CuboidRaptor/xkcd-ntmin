@@ -24,7 +24,7 @@ body {
 #wmoiconspan {
     vertical-align: middle;
     display: inline-block;
-    height: 64px;
+    height: 0;
 }
 
 #xkcdflexdiv {
