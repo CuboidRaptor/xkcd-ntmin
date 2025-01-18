@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "description": "Minimalist daily xkcd new tab page.",
     "manifest_version": 3,
+    "id": "xkcdntmin@cuboidraptor.github.io",
     "chrome_url_overrides" : {
         "newtab": "newtab/newtab.html"
     },
