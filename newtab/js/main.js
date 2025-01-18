@@ -84,3 +84,10 @@ addEventListener("storage", (event) => {
     console.log("DEBUG: localStorage changed detected, syncing data...");
     displayweather(JSON.parse(localStorage.getItem("weatherdata")));
 });
+
+chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: 311}, (response) => {
+    if (!response.success) {
+        throw new Error("Background script xkcd API mirror returned failure");
+    }
+    console.log(response);
+});

@@ -3,9 +3,16 @@
     "version": "0.0.0",
     "description": "Minimalist daily xkcd new tab page.",
     "manifest_version": 3,
-    "id": "xkcdntmin@cuboidraptor.github.io",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "xkcdntmin@cuboidraptor.github.io"
+        }
+    },
     "chrome_url_overrides" : {
         "newtab": "newtab/newtab.html"
     },
-    "host_permissions": ["https://xkcd.com/*"]
+    "host_permissions": ["https://xkcd.com/*"],
+    "background": {
+        "scripts": ["background.js"]
+    }
 }
