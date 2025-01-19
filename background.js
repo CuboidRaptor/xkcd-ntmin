@@ -1,5 +1,5 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (sender.id !== browser.runtime.id) {
+    if (sender.id !== chrome.runtime.id) {
         console.log("WARNING: different id/origin xkcd API mirror request blocked");
         sendResponse({success: false});
         return false;
