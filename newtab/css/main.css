@@ -50,10 +50,10 @@ body {
 }
 
 #xkcdtitle {
-    font-size: 2vw;
+    font-size: 2vh;
     margin: 2px;
 }
 
 #xkcdlink {
-    font-size: 1vw;
+    font-size: 1vh;
 }
