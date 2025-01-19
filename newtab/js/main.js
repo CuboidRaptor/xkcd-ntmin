@@ -2,6 +2,31 @@ function round(n, d) {
     return Math.round((n + Number.EPSILON) * (10 ** d)) / (10 ** d);
 }
 
+function getxkcd(num=null) {
+    let comicdata = JSON.parse(localStorage.getItem("xkcddata"));
+
+    if ((comicdata === null) || (comicdata.day < Math.floor(Date.now() / 86400000))) {
+        // null represents latest xkcd
+        chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: num}, (response) => {
+            // get latest information
+            if (!response.success) {
+                throw new Error("Background script xkcd API mirror returned failure");
+            }
+            console.log(response.data.day);
+            if (parseInt(response.data.day) === new Date().getUTCDate()) {
+                getxkcd(num=response.data.num - 1); // get older and older comics until we can confirm published before today
+                return;
+            }
+            let comic = randint(Math.floor(Date.now() / 86400000), 1, response.data.num + 1); // randint from prng.js
+            console.log(comic);
+            localStorage.setItem("xkcddata", JSON.stringify(
+                {comic: comic, day: Math.floor(Date.now() / 86400000)}
+            ));
+        });
+    }
+}
+
+
 const REFRESHTIME = 60 * 30; // time in seconds of weather refresh, default is half an hour
 
 function displayweather(weatherdata) {
@@ -74,6 +99,7 @@ function checkWeather() {
     });
 }
 
+getxkcd();
 checkWeather();
 
 // refresh every REFRESHTIME seconds and ping the API if necessary
@@ -83,11 +109,4 @@ setInterval(checkWeather, REFRESHTIME * 1000);
 addEventListener("storage", (event) => {
     console.log("DEBUG: localStorage changed detected, syncing data...");
     displayweather(JSON.parse(localStorage.getItem("weatherdata")));
-});
-
-chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: 311}, (response) => {
-    if (!response.success) {
-        throw new Error("Background script xkcd API mirror returned failure");
-    }
-    console.log(response);
 });
