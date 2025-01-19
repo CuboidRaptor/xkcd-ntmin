@@ -9,9 +9,6 @@
     "chrome_url_overrides" : {
         "newtab": "newtab/newtab.html"
     },
-    "permissions": [
-        "geolocation"
-    ],
     "host_permissions": [
         "https://xkcd.com/*"
     ],
