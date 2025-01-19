@@ -12,29 +12,39 @@ function displayxkcd(data) {
     img.title = data.alt;
     link.href = `https://xkcd.com/${data.num}`;
     link.innerHTML = "xkcd.com";
+
+    console.log("DEBUG: XKCD display refreshed")
 }
 
 function getxkcd(num=null) {
     let comicdata = JSON.parse(localStorage.getItem("xkcddata"));
+    let unixday = Math.floor(Date.now() / 86400000);
 
-    if ((comicdata === null) || (comicdata.fetchday < Math.floor(Date.now() / 86400000))) {
+    if ((comicdata === null) || (comicdata.fetchday < unixday)) {
         // null represents latest xkcd
+        console.log("DEBUG: Sending message to background mirror/xkcd API...");
         chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: num}, (response) => {
             // get latest information
             if (!response.success) {
                 throw new Error("Background script xkcd API mirror returned failure");
             }
-            console.log(response.data.day);
             if (parseInt(response.data.day) === new Date().getUTCDate()) {
                 getxkcd(num=response.data.num - 1); // get older and older comics until we can confirm published before today
                 return;
             }
-            let comic = randint(Math.floor(Date.now() / 86400000), 1, response.data.num + 1); // randint from prng.js
-            localStorage.setItem("xkcddata", JSON.stringify({
-                fetchday: Math.floor(Date.now() / 86400000),
-                data: response.data
-            }));
-            displayxkcd(response.data);
+            let comic = randint(unixday, 1, response.data.num + 1); // randint from prng.js
+
+            chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: comic}, (res) => {
+                if (!res.success) {
+                    throw new Error("Background script xkcd API mirror returned failure");
+                }
+
+                localStorage.setItem("xkcddata", JSON.stringify({
+                    fetchday: unixday,
+                    data: res.data
+                }));
+                displayxkcd(res.data);
+            });
         });
     }
     else {
