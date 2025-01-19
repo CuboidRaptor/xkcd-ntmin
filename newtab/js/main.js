@@ -60,6 +60,7 @@ function xkcdevent() { // check new xkcd 30 secs after start of every UTC day
 }
 
 const REFRESHTIME = 60 * 30; // time in seconds of weather refresh, default is half an hour
+let listener = false; // listener that updates weather on focus
 
 function displayweather(weatherdata) {
     let feelslike = document.getElementById("wmo"); // display p's based on font size
@@ -106,29 +107,46 @@ function weather(lat, long) {
 
 function checkWeather() {
     // check if weather cached, otherwise fetch new
-    if (!("geolocation" in navigator)) {
-        // geolocation unavailable
-        console.log("WARNING: geolocation not available in navigator");
-        return;
-    }
-
-    let weatherdata = JSON.parse(localStorage.getItem("weatherdata"));
-
-    if (weatherdata !== null) {
-        // data exists and is recent
-        displayweather(weatherdata); // display cached data
-        if (weatherdata.time > (Date.now() / 1000 - REFRESHTIME)) {
-            return;
+    if (document.hidden) {
+        if (!listener) {
+            listener = true;
+            document.addEventListener("visibilitychange", vischeck);
+            console.log("DEBUG: visibilitychange event listener set");
         }
     }
+    else {
+        if (!("geolocation" in navigator)) {
+            // geolocation unavailable
+            console.log("WARNING: geolocation not available in navigator");
+            return;
+        }
 
-    document.getElementById("updating").innerHTML = "Updating...";
-    navigator.geolocation.getCurrentPosition((position) => {
-        weather(
-            round(position.coords.latitude, 2),
-            round(position.coords.longitude, 2)
-        );
-    });
+        let weatherdata = JSON.parse(localStorage.getItem("weatherdata"));
+
+        if (weatherdata !== null) {
+            // data exists and is recent
+            displayweather(weatherdata); // display cached data
+            if (weatherdata.time > (Date.now() / 1000 - REFRESHTIME)) {
+                return;
+            }
+        }
+
+        document.getElementById("updating").innerHTML = "Updating...";
+        navigator.geolocation.getCurrentPosition((position) => {
+            weather(
+                round(position.coords.latitude, 2),
+                round(position.coords.longitude, 2)
+            );
+        });
+    }
+}
+
+function vischeck() {
+    if (!document.hidden) {
+        checkWeather();
+        document.removeEventListener("visibilitychange", vischeck);
+        listener = false;
+    }
 }
 
 getxkcd();
