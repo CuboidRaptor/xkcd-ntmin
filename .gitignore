@@ -1,2 +1,5 @@
 # testing
 test.js
+
+# build firefox extension
+*.xpi

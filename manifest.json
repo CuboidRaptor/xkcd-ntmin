@@ -1,6 +1,6 @@
 {
-    "name": "xkcd-ntmin",
-    "version": "0.0.0",
+    "name": "xkcd NTmin",
+    "version": "1.0.0",
     "description": "Minimalist daily xkcd new tab page.",
     "manifest_version": 3,
     "browser_specific_settings": {
@@ -8,11 +8,21 @@
             "id": "xkcdntmin@cuboidraptor.github.io"
         }
     },
+    "icons": {
+        "128": "icon128.png"
+    },
     "chrome_url_overrides" : {
         "newtab": "newtab/newtab.html"
     },
-    "host_permissions": ["https://xkcd.com/*"],
+    "permissions": [
+        "geolocation"
+    ],
+    "host_permissions": [
+        "https://xkcd.com/*"
+    ],
     "background": {
-        "scripts": ["background.js"]
+        "scripts": [
+            "background.js"
+        ]
     }
 }
