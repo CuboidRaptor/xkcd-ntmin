@@ -23,10 +23,6 @@ body {
     pointer-events: auto;
     font-family: "Afacad Flux";
 
-    max-height: 75vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-
     text-align: center;
     letter-spacing: 0.1em;
 
@@ -36,6 +32,21 @@ body {
     padding-bottom: 10px;
     border: 2px solid black;
     border-radius: 10px;
+}
+
+#imgdiv {
+    max-width: 50vw;
+    max-height: 75vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#xkcdimg {
+    max-width: 50vw;
+    height: auto;
 }
 
 #xkcdtitle {
