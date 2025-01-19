@@ -1,5 +1,11 @@
 # testing
 test.js
 
-# build firefox extension
+# firefox extension builds
 *.xpi
+
+# chrome extension packs
+*.crx
+
+# chrome private keys
+*.pem
