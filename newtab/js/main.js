@@ -52,6 +52,12 @@ function getxkcd(num=null) {
     }
 }
 
+function xkcdevent() { // check new xkcd 30 secs after start of every UTC day
+    setTimeout(() => {
+        getxkcd();
+        xkcdevent();
+    }, (Math.ceil(Date.now() / 86400000) * 86400000 + 30000) - Date.now())
+}
 
 const REFRESHTIME = 60 * 30; // time in seconds of weather refresh, default is half an hour
 
@@ -127,6 +133,7 @@ function checkWeather() {
 
 getxkcd();
 checkWeather();
+xkcdevent();
 
 // refresh every REFRESHTIME seconds and ping the API if necessary
 setInterval(checkWeather, REFRESHTIME * 1000);
@@ -135,4 +142,5 @@ setInterval(checkWeather, REFRESHTIME * 1000);
 addEventListener("storage", (event) => {
     console.log("DEBUG: localStorage changed detected, syncing data...");
     displayweather(JSON.parse(localStorage.getItem("weatherdata")));
+    displayxkcd(JSON.parse(localStorage.getItem("xkcddata")).data);
 });
