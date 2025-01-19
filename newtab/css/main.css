@@ -42,6 +42,7 @@ body {
 #xkcddiv {
     pointer-events: auto;
     max-height: 780px;
+    overflow-x: hidden;
     overflow-y: auto;
     text-align: center;
     font-family: "Afacad Flux";
