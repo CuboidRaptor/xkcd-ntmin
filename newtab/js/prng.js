@@ -1,5 +1,5 @@
 // thanks to GitHub user bryc for like all of this code
-const cyrb53_64 = function(str, seed=0) {
+function cyrb53_64(str, seed=0) {
     let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
 
     for(let i = 0, ch; i < str.length; i++) {
@@ -22,6 +22,16 @@ function mulberry32(a) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
 }
 
-function randint(seed, min, max) {
-    return Math.floor(mulberry32(cyrb53_64(seed.toString())[0]) * (max - min) + min);
+function randint(seed, min, max, blocked=[]) {
+    blocked.sort();
+    max -= blocked.length;
+    let value = Math.floor(mulberry32(cyrb53_64(seed.toString())[0]) * (max - min) + min);
+
+    for (let i = 0; i < blocked.length; i++) {
+        if (value >= blocked[i]) {
+            value++;
+        }
+    }
+
+    return value;
 }

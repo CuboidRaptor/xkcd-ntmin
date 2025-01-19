@@ -8,10 +8,10 @@ function displayxkcd(data) {
     let link = document.getElementById("xkcdlink");
 
     title.innerHTML = data.title;
-    img.src = data.img;
-    img.title = data.alt;
     link.href = `https://xkcd.com/${data.num}`;
     link.innerHTML = "xkcd.com";
+    img.src = data.img;
+    img.title = data.alt;
 
     console.log("DEBUG: XKCD display refreshed")
 }
@@ -32,7 +32,8 @@ function getxkcd(num=null) {
                 getxkcd(num=response.data.num - 1); // get older and older comics until we can confirm published before today
                 return;
             }
-            let comic = randint(unixDay, 1, response.data.num + 1); // randint from prng.js
+            let comic = randint(unixDay, 1, response.data.num + 1, [1608, 2916]); // randint from prng.js
+                // list of blocked comics at the end as they are web games that I am too lazy to embed
 
             chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: comic}, (res) => {
                 if (!res.success) {
