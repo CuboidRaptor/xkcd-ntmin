@@ -17,10 +17,10 @@ function displayxkcd(data) {
 }
 
 function getxkcd(num=null) {
-    let comicdata = JSON.parse(localStorage.getItem("xkcddata"));
-    let unixday = Math.floor(Date.now() / 86400000);
+    let comicData = JSON.parse(localStorage.getItem("xkcddata"));
+    let unixDay = Math.floor(Date.now() / 86400000);
 
-    if ((comicdata === null) || (comicdata.fetchday < unixday)) {
+    if ((comicData === null) || (comicData.fetchDay < unixDay)) {
         // null represents latest xkcd
         console.log("DEBUG: Sending message to background mirror/xkcd API...");
         chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: num}, (response) => {
@@ -32,7 +32,7 @@ function getxkcd(num=null) {
                 getxkcd(num=response.data.num - 1); // get older and older comics until we can confirm published before today
                 return;
             }
-            let comic = randint(unixday, 1, response.data.num + 1); // randint from prng.js
+            let comic = randint(unixDay, 1, response.data.num + 1); // randint from prng.js
 
             chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: comic}, (res) => {
                 if (!res.success) {
@@ -40,7 +40,7 @@ function getxkcd(num=null) {
                 }
 
                 localStorage.setItem("xkcddata", JSON.stringify({
-                    fetchday: unixday,
+                    fetchDay: unixDay,
                     data: res.data
                 }));
                 displayxkcd(res.data);
@@ -48,34 +48,34 @@ function getxkcd(num=null) {
         });
     }
     else {
-        displayxkcd(comicdata.data);
+        displayxkcd(comicData.data);
     }
 }
 
-function xkcdevent() { // check new xkcd 30 secs after start of every UTC day
+function xkcdEvent() { // check new xkcd 30 secs after start of every UTC day
     setTimeout(() => {
         getxkcd();
-        xkcdevent();
+        xkcdEvent();
     }, (Math.ceil(Date.now() / 86400000) * 86400000 + 30000) - Date.now())
 }
 
 const REFRESHTIME = 60 * 30; // time in seconds of weather refresh, default is half an hour
 let listener = false; // listener that updates weather on focus
 
-function displayweather(weatherdata) {
-    let feelslike = document.getElementById("wmo"); // display p's based on font size
+function displayWeather(weatherData) {
+    let feelsLike = document.getElementById("wmo"); // display p's based on font size
     let other = document.getElementById("other");
-    let iconspan = document.getElementById("wmoiconspan");
+    let iconSpan = document.getElementById("wmoiconspan");
     let icon = document.getElementById("wmoicon");
-    let curwmo = wcjson[weatherdata.weather_code][{0: "night", 1: "day"}[weatherdata.is_day]]; // wcjson is from wmocodes.js
+    let curWMO = wcjson[weatherData.weather_code][{0: "night", 1: "day"}[weatherData.is_day]]; // wcjson is from wmocodes.js
 
-    feelslike.innerHTML = `${curwmo.description}`
-    other.innerHTML = `Feels like <b>${weatherdata.apparent_temperature}°</b><br>
-Temp: <b>${weatherdata.temperature_2m}°</b><br>
-Humidity: <b>${weatherdata.relative_humidity_2m}%</b><br>
-Chance of Rain: <b>${weatherdata.precipitation_probability}%</b><br>`
-    iconspan.style.height = "64px"
-    icon.src = "https://openweathermap.org/img/wn/" + curwmo.image;
+    feelsLike.innerHTML = `${curWMO.description}`
+    other.innerHTML = `Feels like <b>${weatherData.apparent_temperature}°</b><br>
+Temp: <b>${weatherData.temperature_2m}°</b><br>
+Humidity: <b>${weatherData.relative_humidity_2m}%</b><br>
+Chance of Rain: <b>${weatherData.precipitation_probability}%</b><br>`
+    iconSpan.style.height = "64px"
+    icon.src = "https://openweathermap.org/img/wn/" + curWMO.image;
     document.getElementById("updating").innerHTML = ""; // remove updating symbol if it exists
     console.log("DEBUG: Weather display refreshed");
 }
@@ -96,11 +96,11 @@ function weather(lat, long) {
         }
     ).then(
         (data) => {
-            weatherdata = {...data.daily, ...data.current};
-            localStorage.setItem("weatherdata", JSON.stringify(weatherdata));
-            displayweather(weatherdata);
+            weatherData = {...data.daily, ...data.current};
+            localStorage.setItem("weatherdata", JSON.stringify(weatherData));
+            displayWeather(weatherData);
             console.log("DEBUG: Weather data fetched!");
-            console.log(`DEBUG: Weather data last updated at ${weatherdata.time}`);
+            console.log(`DEBUG: Weather data last updated at ${weatherData.time}`);
         }
     )
 }
@@ -110,7 +110,7 @@ function checkWeather() {
     if (document.hidden) {
         if (!listener) {
             listener = true;
-            document.addEventListener("visibilitychange", vischeck);
+            document.addEventListener("visibilitychange", visCheck);
             console.log("DEBUG: visibilitychange event listener set");
         }
     }
@@ -121,12 +121,12 @@ function checkWeather() {
             return;
         }
 
-        let weatherdata = JSON.parse(localStorage.getItem("weatherdata"));
+        let weatherData = JSON.parse(localStorage.getItem("weatherdata"));
 
-        if (weatherdata !== null) {
+        if (weatherData !== null) {
             // data exists and is recent
-            displayweather(weatherdata); // display cached data
-            if (weatherdata.time > (Date.now() / 1000 - REFRESHTIME)) {
+            displayWeather(weatherData); // display cached data
+            if (weatherData.time > (Date.now() / 1000 - REFRESHTIME)) {
                 return;
             }
         }
@@ -141,17 +141,17 @@ function checkWeather() {
     }
 }
 
-function vischeck() {
+function visCheck() {
     if (!document.hidden) {
         checkWeather();
-        document.removeEventListener("visibilitychange", vischeck);
+        document.removeEventListener("visibilitychange", visCheck);
         listener = false;
     }
 }
 
 getxkcd();
 checkWeather();
-xkcdevent();
+xkcdEvent();
 
 // refresh every REFRESHTIME seconds and ping the API if necessary
 setInterval(checkWeather, REFRESHTIME * 1000);
@@ -159,6 +159,6 @@ setInterval(checkWeather, REFRESHTIME * 1000);
 // if another tab updates, display the update
 addEventListener("storage", (event) => {
     console.log("DEBUG: localStorage changed detected, syncing data...");
-    displayweather(JSON.parse(localStorage.getItem("weatherdata")));
+    displayWeather(JSON.parse(localStorage.getItem("weatherdata")));
     displayxkcd(JSON.parse(localStorage.getItem("xkcddata")).data);
 });
