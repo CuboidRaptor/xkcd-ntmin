@@ -139,7 +139,9 @@ function checkWeather() {
                 round(position.coords.latitude, 2),
                 round(position.coords.longitude, 2)
             );
-        });
+        }, (error) => {
+            throw new Error(`code ${error.code}, ${error.message}`);
+        }, {timeout: 15000});
     }
 }
 
