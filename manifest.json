@@ -3,11 +3,6 @@
     "version": "1.0.0",
     "description": "Minimalist daily xkcd new tab page.",
     "manifest_version": 3,
-    "browser_specific_settings": {
-        "gecko": {
-            "id": "xkcdntmin@cuboidraptor.github.io"
-        }
-    },
     "icons": {
         "128": "icon128.png"
     },

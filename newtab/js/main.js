@@ -23,7 +23,7 @@ function getxkcd(num=null) {
     if ((comicData === null) || (comicData.fetchDay < unixDay)) {
         // null represents latest xkcd
         console.log("DEBUG: Sending message to background mirror/xkcd API...");
-        chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: num}, (response) => {
+        chrome.runtime.sendMessage(chrome.runtime.id, {value: num}, (response) => {
             // get latest information
             if (!response.success) {
                 throw new Error("Background script xkcd API mirror returned failure");
@@ -35,7 +35,7 @@ function getxkcd(num=null) {
             let comic = randint(unixDay, 1, response.data.num + 1, [1608, 2916]); // randint from prng.js
                 // list of blocked comics at the end as they are web games that I am too lazy to embed
 
-            chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: comic}, (res) => {
+            chrome.runtime.sendMessage(chrome.runtime.id, {value: comic}, (res) => {
                 if (!res.success) {
                     throw new Error("Background script xkcd API mirror returned failure");
                 }
