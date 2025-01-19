@@ -2,10 +2,22 @@ function round(n, d) {
     return Math.round((n + Number.EPSILON) * (10 ** d)) / (10 ** d);
 }
 
+function displayxkcd(data) {
+    let title = document.getElementById("xkcdtitle");
+    let img = document.getElementById("xkcdimg");
+    let link = document.getElementById("xkcdlink");
+
+    title.innerHTML = data.title;
+    img.src = data.img;
+    img.title = data.alt;
+    link.href = `https://xkcd.com/${data.num}`;
+    link.innerHTML = "xkcd.com";
+}
+
 function getxkcd(num=null) {
     let comicdata = JSON.parse(localStorage.getItem("xkcddata"));
 
-    if ((comicdata === null) || (comicdata.day < Math.floor(Date.now() / 86400000))) {
+    if ((comicdata === null) || (comicdata.fetchday < Math.floor(Date.now() / 86400000))) {
         // null represents latest xkcd
         chrome.runtime.sendMessage("xkcdntmin@cuboidraptor.github.io", {value: num}, (response) => {
             // get latest information
@@ -18,11 +30,15 @@ function getxkcd(num=null) {
                 return;
             }
             let comic = randint(Math.floor(Date.now() / 86400000), 1, response.data.num + 1); // randint from prng.js
-            console.log(comic);
-            localStorage.setItem("xkcddata", JSON.stringify(
-                {comic: comic, day: Math.floor(Date.now() / 86400000)}
-            ));
+            localStorage.setItem("xkcddata", JSON.stringify({
+                fetchday: Math.floor(Date.now() / 86400000),
+                data: response.data
+            }));
+            displayxkcd(response.data);
         });
+    }
+    else {
+        displayxkcd(comicdata.data);
     }
 }
 
