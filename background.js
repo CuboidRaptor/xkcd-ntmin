@@ -84,8 +84,6 @@ function xkcdChecker(data, time) {
     });
 }
 
-
-
 getXKCD(null, xkcdChecker, {
     unixDay: Math.floor(Date.now() / 86400000),
     utcDay: new Date().getUTCDate()
