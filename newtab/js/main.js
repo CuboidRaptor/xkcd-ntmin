@@ -23,43 +23,6 @@ function displayxkcd(data) {
     console.log("DEBUG: XKCD display refreshed")
 }
 
-function getxkcd(num=null) {
-    let comicData = JSON.parse(localStorage.getItem("xkcddata"));
-    let unixDay = Math.floor(Date.now() / 86400000);
-
-    if ((comicData === null) || (comicData.fetchDay < unixDay)) {
-        // null represents latest xkcd
-        console.log("DEBUG: Sending message to background mirror/xkcd API...");
-        chrome.runtime.sendMessage(chrome.runtime.id, {value: num}, (response) => {
-            // get latest information
-            if (!response.success) {
-                throw new Error("Background script xkcd API mirror returned failure");
-            }
-            if (parseInt(response.data.day) === new Date().getUTCDate()) {
-                getxkcd(num=response.data.num - 1); // get older and older comics until we can confirm published before today
-                return;
-            }
-            let comic = randint(unixDay, 1, response.data.num + 1, [1608, 2916]); // randint from prng.js
-                // list of blocked comics at the end as they are web games that I am too lazy to embed
-            //comic = 2636 // comic override
-
-            chrome.runtime.sendMessage(chrome.runtime.id, {value: comic}, (res) => {
-                if (!res.success) {
-                    throw new Error("Background script xkcd API mirror returned failure");
-                }
-
-                localStorage.setItem("xkcddata", JSON.stringify({
-                    fetchDay: unixDay,
-                    data: res.data
-                }));
-                displayxkcd(res.data);
-            });
-        });
-    }
-    else {
-        displayxkcd(comicData.data);
-    }
-}
 
 function xkcdEvent() { // check new xkcd 30 secs after start of every UTC day
     setTimeout(() => {
@@ -71,13 +34,7 @@ function xkcdEvent() { // check new xkcd 30 secs after start of every UTC day
 // check image height whenever it loads
 document.getElementById("xkcdimg").addEventListener("load", imgHeightCheck);
 
-getxkcd();
-xkcdEvent();
+chrome.runtime.sendMessage(chrome.runtime.id, {}, (response) => {displayxkcd(response.data)});
+//xkcdEvent();
 
 addEventListener("resize", imgHeightCheck);
-
-// if another tab updates, display the update
-addEventListener("storage", (event) => {
-    console.log("DEBUG: localStorage changed detected, syncing data...");
-    displayxkcd(JSON.parse(localStorage.getItem("xkcddata")).data);
-});
