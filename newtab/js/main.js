@@ -1,6 +1,9 @@
 function imgHeightCheck() {
     let img = document.getElementById("xkcdimg");
 
+    console.log(img.naturalHeight);
+    console.log(window.innerHeight);
+
     if (img.naturalHeight > window.innerHeight) {
         img.style.maxHeight = "";
     }
@@ -19,8 +22,6 @@ function displayxkcd(data) {
     link.innerHTML = "xkcd.com";
     img.src = data.img;
     img.title = data.alt;
-
-    imgHeightCheck();
 
     console.log("DEBUG: XKCD display refreshed")
 }
@@ -43,7 +44,7 @@ function getxkcd(num=null) {
             }
             let comic = randint(unixDay, 1, response.data.num + 1, [1608, 2916]); // randint from prng.js
                 // list of blocked comics at the end as they are web games that I am too lazy to embed
-            comic = 497 // comic override
+            comic = 1732// comic override
 
             chrome.runtime.sendMessage(chrome.runtime.id, {value: comic}, (res) => {
                 if (!res.success) {
@@ -69,6 +70,9 @@ function xkcdEvent() { // check new xkcd 30 secs after start of every UTC day
         xkcdEvent();
     }, (Math.ceil(Date.now() / 86400000) * 86400000 + 30000) - Date.now())
 }
+
+// check image height whenever it loads
+document.getElementById("xkcdimg").addEventListener("load", imgHeightCheck);
 
 getxkcd();
 xkcdEvent();
