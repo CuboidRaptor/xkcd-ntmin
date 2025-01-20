@@ -84,7 +84,18 @@ function xkcdChecker(data, time) {
     });
 }
 
-getXKCD(null, xkcdChecker, {
-    unixDay: Math.floor(Date.now() / 86400000),
-    utcDay: new Date().getUTCDate()
-});
+function xkcdUpdate() {
+    getXKCD(null, xkcdChecker, {
+        unixDay: Math.floor(Date.now() / 86400000),
+        utcDay: new Date().getUTCDate()
+    });
+
+    setTimeout(xkcdUpdate,
+        (
+            Math.ceil(Date.now() / 86400000) * 86400000
+            + (Math.random() * 55000 + 5000)
+        ) - Date.now()
+    );
+}
+
+xkcdUpdate();
