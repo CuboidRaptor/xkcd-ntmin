@@ -1,9 +1,6 @@
 function imgHeightCheck() {
     let img = document.getElementById("xkcdimg");
 
-    console.log(img.naturalHeight);
-    console.log(window.innerHeight);
-
     if (img.naturalHeight > window.innerHeight) {
         img.style.maxHeight = "";
     }
@@ -44,7 +41,7 @@ function getxkcd(num=null) {
             }
             let comic = randint(unixDay, 1, response.data.num + 1, [1608, 2916]); // randint from prng.js
                 // list of blocked comics at the end as they are web games that I am too lazy to embed
-            comic = 1732// comic override
+            comic = 2517 // comic override
 
             chrome.runtime.sendMessage(chrome.runtime.id, {value: comic}, (res) => {
                 if (!res.success) {
