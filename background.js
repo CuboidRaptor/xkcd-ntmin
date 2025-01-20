@@ -49,6 +49,8 @@ function getXKCD(num, callback, time) {
         url_part = num.toString() + "/";
     }
 
+    console.log(`DEBUG: Fetching https://xkcd.com/${url_part}info.0.json ...`)
+
     fetch(`https://xkcd.com/${url_part}info.0.json`).then(
         (response) => {
             if (!response.ok) {
@@ -85,6 +87,7 @@ function xkcdChecker(data, time) {
 }
 
 function xkcdUpdate() {
+    console.log("DEBUG: Getting new xkcd...");
     getXKCD(null, xkcdChecker, {
         unixDay: Math.floor(Date.now() / 86400000),
         utcDay: new Date().getUTCDate()
