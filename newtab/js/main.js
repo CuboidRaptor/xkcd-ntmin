@@ -23,14 +23,6 @@ function displayxkcd(data) {
     console.log("DEBUG: XKCD display refreshed")
 }
 
-
-function xkcdEvent() { // check new xkcd 30 secs after start of every UTC day
-    setTimeout(() => {
-        getxkcd();
-        xkcdEvent();
-    }, (Math.ceil(Date.now() / 86400000) * 86400000 + 30000) - Date.now())
-}
-
 // check image height whenever it loads
 document.getElementById("xkcdimg").addEventListener("load", imgHeightCheck);
 
