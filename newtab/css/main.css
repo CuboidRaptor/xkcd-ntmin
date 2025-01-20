@@ -27,21 +27,22 @@ body {
     letter-spacing: 0.1em;
 
     background-color: white;
-    padding-left: 2vw;
-    padding-right: 2vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
     padding-bottom: 1vh;
-    border: 0.2vw solid black;
-    border-radius: min(1.5vw, 2vh);
+    border: 2px solid black;
+    border-radius: 15px;
 }
 
 #imgdiv {
     max-height: 75vh;
+    max-width: 780px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 #xkcdimg {
-    max-width: 90vw;
+    max-width: 85vw;
     width: auto;
     height: auto;
 
@@ -50,10 +51,10 @@ body {
 }
 
 #xkcdtitle {
-    font-size: 2vh;
+    font-size: 24px;
     margin: 2px;
 }
 
 #xkcdlink {
-    font-size: 1vh;
+    font-size: 12px;
 }
