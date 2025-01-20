@@ -41,6 +41,7 @@ function getxkcd(num=null) {
             }
             let comic = randint(unixDay, 1, response.data.num + 1, [1608, 2916]); // randint from prng.js
                 // list of blocked comics at the end as they are web games that I am too lazy to embed
+            //comic = 2636 // comic override
 
             chrome.runtime.sendMessage(chrome.runtime.id, {value: comic}, (res) => {
                 if (!res.success) {
