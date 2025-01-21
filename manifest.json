@@ -1,6 +1,6 @@
 {
     "name": "xkcd NTmin",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "description": "Minimalist daily xkcd new tab page.",
     "manifest_version": 3,
     "icons": {
