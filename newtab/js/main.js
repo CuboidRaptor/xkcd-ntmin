@@ -2,9 +2,11 @@ function imgHeightCheck() {
     let img = document.getElementById("xkcdimg");
 
     if (img.naturalHeight > window.innerHeight) {
+        console.log("DEBUG: Image too large, scrolling...");
         img.style.maxHeight = "";
     }
     else {
+        console.log("DEBUG: Image fits, allowing resize...");
         img.style.maxHeight = "75vh";
     }
 }
@@ -33,7 +35,7 @@ function displayXKCD(data) {
 }
 
 // check image height whenever it loads
-document.addEventListener("resize", imgHeightCheck);
+window.addEventListener("resize", imgHeightCheck);
 document.getElementById("xkcdimg").addEventListener("load", imgHeightCheck);
 
 chrome.storage.local.onChanged.addListener(() => {
