@@ -22,13 +22,19 @@ function displayxkcd(data) {
     img.src = data.img;
     img.title = data.alt;
 
-    console.log("DEBUG: XKCD display refreshed")
+    console.log("DEBUG: XKCD display refreshed");
 }
 
 // check image height whenever it loads
+document.addEventListener("resize", imgHeightCheck);
 document.getElementById("xkcdimg").addEventListener("load", imgHeightCheck);
 
-chrome.storage.local.get("comicData").then((data) => {displayxkcd(data.comicData.data)});
-//xkcdEvent();
+chrome.storage.local.get("comicData").then((data) => {
+    if (data.comicData !== undefined) {
+        displayxkcd(data.comicData.data);
+    }
+    else {
+        console.log("WARNING: Undefined received from chrome.storage.local");
+    }
+});
 
-addEventListener("resize", imgHeightCheck);
