@@ -28,7 +28,7 @@ function displayxkcd(data) {
 // check image height whenever it loads
 document.getElementById("xkcdimg").addEventListener("load", imgHeightCheck);
 
-chrome.runtime.sendMessage(chrome.runtime.id, {}, (response) => {displayxkcd(response.data)});
+chrome.storage.local.get("comicData").then((data) => {displayxkcd(data.comicData.data)});
 //xkcdEvent();
 
 addEventListener("resize", imgHeightCheck);
