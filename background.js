@@ -1,8 +1,8 @@
-// thanks to GitHub user bryc for like all of this randint code
+// thanks to GitHub user bryc for cyrb53-64 and mulberry32 js implementations
 function cyrb53_64(str, seed=0) {
     let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
 
-    for(let i = 0, ch; i < str.length; i++) {
+    for (let i = 0, ch; i < str.length; i++) {
         ch = str.charCodeAt(i);
         h1 = Math.imul(h1 ^ ch, 2654435761);
         h2 = Math.imul(h2 ^ ch, 1597334677);
@@ -38,8 +38,6 @@ function randint(seed, min, max, blocked=[]) {
 
 // </randint stuff>
 // actual code for XKCD fetching and stuff!!!
-
-let init = false; // prevent data being fetched before initilization
 
 function getXKCD(num, callback, time) {
     // ping xkcd api for num comic, then run callback
