@@ -42,6 +42,7 @@ function randint(seed, min, max, blocked=[]) {
 let init = false; // prevent data being fetched before initilization
 
 function getXKCD(num, callback, time) {
+    // ping xkcd api for num comic, then run callback
     let url_part = "";
 
     if (num !== null) { // null means latest
@@ -61,6 +62,7 @@ function getXKCD(num, callback, time) {
 }
 
 function xkcdChecker(data, time) {
+    // find the right xkcd latest, then generate today's comic and fetch/push to chrome.storage.local
     if (parseInt(data.day) === time.utcDay) {
         getXKCD(data.num - 1, xkcdChecker); // get older and older comics until we can confirm published before today
         return;
@@ -73,6 +75,7 @@ function xkcdChecker(data, time) {
 }
 
 function xkcdUpdate() {
+    // drives getXKCD and also sets timeframe (also setTimeouts itself repeatedly so it can update every day)
     console.log("DEBUG: Getting new xkcd...");
     getXKCD(null, xkcdChecker, {
         unixDay: Math.floor(Date.now() / 86400000),
