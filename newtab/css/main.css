@@ -41,6 +41,11 @@ body {
     overflow-y: auto;
 }
 
+.divinitial {
+    width: 780px;
+    height: 480px;
+}
+
 #xkcdimg {
     max-width: 85vw;
     width: auto;
