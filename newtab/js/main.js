@@ -3,12 +3,10 @@ function imgHeightCheck() {
     let imgDiv = document.getElementById("imgdiv");
 
     if (img.naturalHeight > window.innerHeight) {
-        console.log("DEBUG: Image too large, scrolling...");
         imgDiv.style.overflow = "auto";
         img.style.maxHeight = "";
     }
     else {
-        console.log("DEBUG: Image fits, allowing resize...");
         imgDiv.style.overflow = "hidden";
         img.style.maxHeight = "75vh";
     }
