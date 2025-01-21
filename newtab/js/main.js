@@ -1,8 +1,11 @@
+const resizeFactor = 1.2 // multiple of screen height that image has to be
+    // before it gets scrolled
+
 function imgHeightCheck() {
     let img = document.getElementById("xkcdimg");
     let imgDiv = document.getElementById("imgdiv");
 
-    if (img.naturalHeight > window.innerHeight) {
+    if (img.naturalHeight > (window.innerHeight * resizeFactor)) {
         imgDiv.style.overflow = "auto";
         img.style.maxHeight = "";
     }
