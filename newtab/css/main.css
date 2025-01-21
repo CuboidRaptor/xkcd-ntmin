@@ -38,7 +38,7 @@ body {
     max-height: 75vh;
     max-width: 780px;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .divinitial {
