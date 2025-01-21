@@ -9,7 +9,7 @@ function imgHeightCheck() {
     }
 }
 
-function displayxkcd(data) {
+function displayXKCD(data) {
     chrome.storage.local.get("comicData").then((data) => {
         if (data !== {}) {
             console.log("DEBUG: XKCD display refreshing...");
@@ -38,7 +38,7 @@ document.getElementById("xkcdimg").addEventListener("load", imgHeightCheck);
 
 chrome.storage.local.onChanged.addListener(() => {
     console.log("DEBUG: chrome.storage.local change detected, refreshing xkcd display...");
-    displayxkcd();
+    displayXKCD();
 })
-displayxkcd();
+displayXKCD();
 
