@@ -12,11 +12,13 @@ function imgHeightCheck() {
 function displayxkcd(data) {
     let title = document.getElementById("xkcdtitle");
     let img = document.getElementById("xkcdimg");
+    let imgDiv = document.getElementById("imgdiv");
     let link = document.getElementById("xkcdlink");
 
     title.innerHTML = data.title;
     link.href = `https://xkcd.com/${data.num}`;
     link.innerHTML = "xkcd.com";
+    imgDiv.classList.remove("divinitial");
     img.src = data.img;
     img.title = data.alt;
 
