@@ -40,7 +40,6 @@ function randint(seed, min, max, blocked=[]) {
 // actual code for XKCD fetching and stuff!!!
 
 let init = false; // prevent data being fetched before initilization
-let comicData = {};
 
 function getXKCD(num, callback, time) {
     let url_part = "";
@@ -68,22 +67,9 @@ function xkcdChecker(data, time) {
     }
     let comic = randint(time.unixDay, 1, data.num + 1, [1608, 2916]);
 
-    getXKCD(comic, (data) => {
-        comicData = {fetchDay: time.unixDay, data: data}
-
-        if (!init) { // set listener, but only the first time
-            init = true;
-            chrome.runtime.onMessage.addListener((_request, sender, sendResponse) => {
-                if (sender.id !== chrome.runtime.id) {
-                    console.log("WARNING: different id/origin xkcd API mirror request blocked");
-                    sendResponse({success: false});
-                    return false;
-                }
-
-                sendResponse(comicData);
-            });
-        }
-    });
+    getXKCD(comic, (data, time) => {
+        chrome.storage.local.set({comicData: {fetchDay: time.unixDay, data: data}});
+    }, time);
 }
 
 function xkcdUpdate() {
