@@ -16,7 +16,7 @@ function imgHeightCheck() {
 }
 
 function displayXKCD(data) {
-    chrome.storage.local.get("comicData").then((data) => {
+    chrome.storage.local.get("comicData").then(function(data) {
         if (data !== {}) {
             console.log("DEBUG: XKCD display refreshing...");
             let title = document.getElementById("xkcdtitle");
