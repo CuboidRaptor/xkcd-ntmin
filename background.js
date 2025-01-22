@@ -24,11 +24,13 @@ function mulberry32(a) {
 
 function randint(seed, min, max, blocked=[]) {
     blocked.sort();
-    max -= blocked.length;
+    max -= blocked.length; /* remove shrink range by length of blocked and then
+        shift over numbers equal or larger than blocked values so the maximum value
+        still lines up */
     let value = Math.floor(mulberry32(cyrb53_64(seed.toString())[0]) * (max - min) + min);
 
-    for (let i = 0; i < blocked.length; i++) {
-        if (value >= blocked[i]) {
+    for (let blockedNum of blocked) {
+        if (value >= blockedNum) {
             value++;
         }
     }
@@ -47,16 +49,18 @@ function getXKCD(num, callback, time) {
         url_part = num.toString() + "/";
     }
 
-    console.log(`DEBUG: Fetching https://xkcd.com/${url_part}info.0.json ...`)
+    let url = `https://xkcd.com/${url_part}info.0.json`
 
-    fetch(`https://xkcd.com/${url_part}info.0.json`).then(
-        (response) => {
-            if (!response.ok) {
-                throw new Error(`XKCD API fetch failed with status ${response.status}`);
-            }
-            return response.json();
+    console.log(`DEBUG: Fetching ${url} ...`)
+
+    fetch(url).then((response) => {
+        if (!response.ok) {
+            throw new Error(`XKCD API fetch failed with status ${response.status}`);
         }
-    ).then((data) => {callback(data, time)});
+        return response.json();
+    }).then((data) => {
+        callback(data, time)
+    });
 }
 
 function xkcdChecker(data, time) {
@@ -82,6 +86,7 @@ function xkcdUpdate() {
     });
     chrome.alarms.create("xkcdUpdate", {
         when: (Math.ceil(Date.now() / 86400000) * 86400000 + (Math.random() * 55000 + 5000))
+            // take unix daystamp, round up to next day, add random 5-60 secs delay
     });
 }
 
