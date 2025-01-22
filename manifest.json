@@ -15,7 +15,8 @@
         "newtab": "newtab/newtab.html"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "alarms"
     ],
     "host_permissions": [
         "https://xkcd.com/*"
