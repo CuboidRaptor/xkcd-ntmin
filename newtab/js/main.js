@@ -49,9 +49,15 @@ chrome.storage.local.onChanged.addListener(() => {
 })
 displayXKCD();
 
+// permissions button stuff vvvvvvvv
+function permsButtonClicked() {
+    chrome.permissions.request({origins: ["https://xkcd.com/*"]});
+}
+
+document.getElementById("permsbutton").addEventListener("click", permsButtonClicked);
+
 chrome.permissions.contains({origins: ["https://xkcd.com/*"]}).then((granted) => {
-    console.log(granted);
     if (!granted) {
-        
+
     }
 })
