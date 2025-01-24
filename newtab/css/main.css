@@ -63,3 +63,16 @@ body {
 #xkcdlink {
     font-size: 12px;
 }
+
+#permbutton {
+    position: absolute;
+    font-family: "Afacad Flux";
+    background-color: white;
+
+    margin-top: 10px;
+    margin-left: 10px;
+
+    width: 160px;
+    height: 24px;
+    z-index: 99999;
+}
