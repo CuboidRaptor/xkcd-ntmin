@@ -50,14 +50,25 @@ chrome.storage.local.onChanged.addListener(() => {
 displayXKCD();
 
 // permissions button stuff vvvvvvvv
+function permsCheck(clicked=false) {
+    chrome.permissions.contains({origins: ["https://xkcd.com/*"]}).then((granted) => {
+        if (granted) {
+            document.getElementById("permsbutton").style.display = "none";
+
+            if (clicked) {
+                chrome.runtime.sendMessage(chrome.runtime.id, {}); // only oen action ever needs to be performed
+                    // via sendMessage so any request will result in background simply refetching xkcd
+            }
+        }
+        else {
+            document.getElementById("permsbutton").style.display = "initial";
+        }
+    });
+}
+
 function permsButtonClicked() {
-    chrome.permissions.request({origins: ["https://xkcd.com/*"]});
+    chrome.permissions.request({origins: ["https://xkcd.com/*"]}).then(() => {permsCheck(true);});
 }
 
 document.getElementById("permsbutton").addEventListener("click", permsButtonClicked);
-
-chrome.permissions.contains({origins: ["https://xkcd.com/*"]}).then((granted) => {
-    if (!granted) {
-        document.getElementById("permsbutton").style.display = "inline";
-    }
-})
+permsCheck();

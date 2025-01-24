@@ -96,4 +96,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     }
 });
 
+chrome.runtime.onMessage.addListener(() => {xkcdUpdate();});
+
 xkcdUpdate();
+
