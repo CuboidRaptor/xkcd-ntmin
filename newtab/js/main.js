@@ -58,6 +58,6 @@ document.getElementById("permsbutton").addEventListener("click", permsButtonClic
 
 chrome.permissions.contains({origins: ["https://xkcd.com/*"]}).then((granted) => {
     if (!granted) {
-
+        document.getElementById("permsbutton").style.display = "inline";
     }
 })

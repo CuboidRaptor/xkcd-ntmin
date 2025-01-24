@@ -65,17 +65,15 @@ body {
 }
 
 #permsbutton {
-    position: absolute;
     font-family: "Afacad Flux";
     background-color: white;
     border-radius: 5px;
     border-style: outset;
 
-    margin-top: 10px;
-    margin-left: 10px;
+    width: 300px;
+    height: 40px;
 
-    width: 160px;
-    height: 24px;
+    display: none;
 }
 
 #permsbutton:hover {
