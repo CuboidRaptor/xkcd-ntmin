@@ -49,3 +49,9 @@ chrome.storage.local.onChanged.addListener(() => {
 })
 displayXKCD();
 
+chrome.permissions.contains({origins: ["https://xkcd.com/*"]}).then((granted) => {
+    console.log(granted);
+    if (!granted) {
+        
+    }
+})
