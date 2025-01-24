@@ -24,14 +24,17 @@ function displayXKCD(data) {
             let img = document.getElementById("xkcdimg");
             let imgDiv = document.getElementById("imgdiv");
             let link = document.getElementById("xkcdlink");
+            let exlink = document.getElementById("explainxkcdlink");
             let cData = data.comicData.data;
 
             title.innerHTML = cData.title;
-            link.href = `https://xkcd.com/${cData.num}`;
-            link.innerHTML = "xkcd.com";
             imgDiv.classList.remove("divinitial"); // add placeholder box that will be removed when image loads
             img.src = cData.img;
             img.title = cData.alt;
+            link.href = `https://xkcd.com/${cData.num}`;
+            link.innerHTML = "xkcd.com";
+            exlink.href = `https://www.explainxkcd.com/wiki/index.php/${cData.num}`;
+            exlink.innerHTML = "explainxkcd";
         }
         else {
             console.log("WARNING: Undefined received from chrome.storage.local");
