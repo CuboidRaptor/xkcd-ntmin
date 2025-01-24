@@ -68,10 +68,20 @@ body {
     position: absolute;
     font-family: "Afacad Flux";
     background-color: white;
+    border-radius: 5px;
+    border-style: outset;
 
     margin-top: 10px;
     margin-left: 10px;
 
     width: 160px;
     height: 24px;
+}
+
+#permsbutton:hover {
+    filter: brightness(90%);
+}
+
+#permsbutton:active {
+    border-style: inset;
 }
