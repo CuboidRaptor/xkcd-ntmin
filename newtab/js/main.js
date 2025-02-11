@@ -15,9 +15,9 @@ function imgHeightCheck() {
     }
 }
 
-function displayXKCD(data) {
+function displayXKCD() {
     chrome.storage.local.get("comicData").then(function(data) {
-        if (data !== {}) {
+        if (!data.isEmpty()) {
             console.log("DEBUG: XKCD display refreshing...");
             
             let title = document.getElementById("xkcdtitle");
@@ -59,7 +59,7 @@ function permsCheck(clicked=false) {
             document.getElementById("permsbutton").style.display = "none";
 
             if (clicked) {
-                chrome.runtime.sendMessage(chrome.runtime.id, {}); // only oen action ever needs to be performed
+                chrome.runtime.sendMessage(chrome.runtime.id, {}); // only one action ever needs to be performed
                     // via sendMessage so any request will result in background simply refetching xkcd
             }
         }
