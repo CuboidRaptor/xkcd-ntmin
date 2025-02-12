@@ -66,7 +66,7 @@ function getXKCD(num, callback, time) {
 function xkcdChecker(data, time) {
     // find the right xkcd latest, then generate today's comic and fetch/push to chrome.storage.session
     if (parseInt(data.day) === time.utcDay) {
-        getXKCD(data.num - 1, xkcdChecker); // get older and older comics until we can confirm published before today
+        getXKCD(data.num - 1, xkcdChecker, time); // get older and older comics until we can confirm published before today
         return;
     }
     let comic = randint(time.unixDay, 1, data.num + 1, [1525, 1608, 2916]);
