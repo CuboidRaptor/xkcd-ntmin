@@ -64,7 +64,7 @@ function getXKCD(num, callback, time) {
 }
 
 function xkcdChecker(data, time) {
-    // find the right xkcd latest, then generate today's comic and fetch/push to chrome.storage.local
+    // find the right xkcd latest, then generate today's comic and fetch/push to chrome.storage.session
     if (parseInt(data.day) === time.utcDay) {
         getXKCD(data.num - 1, xkcdChecker); // get older and older comics until we can confirm published before today
         return;
@@ -73,30 +73,23 @@ function xkcdChecker(data, time) {
     //comic = 1732; // override for random comic/debug purposes
 
     getXKCD(comic, (data, time) => {
-        chrome.storage.local.set({comicData: {fetchDay: time.unixDay, data: data}});
+        chrome.storage.session.set({comicData: {fetchDay: time.unixDay, data: data}});
     }, time);
 }
 
-function xkcdUpdate() {
-    // drives getXKCD and also sets timeframe (also setTimeouts itself repeatedly so it can update every day)
-    console.log("DEBUG: Getting new xkcd...");
-    getXKCD(null, xkcdChecker, {
+function checkNewXKCD() {
+    // new tab loaded, check if new xkcd is needed
+    let time = {
         unixDay: Math.floor(Date.now() / 86400000),
         utcDay: new Date().getUTCDate()
-    });
-    chrome.alarms.create("xkcdUpdate", {
-        when: (Math.ceil(Date.now() / 86400000) * 86400000 + (Math.random() * 55000 + 5000))
-            // take unix daystamp, round up to next day, add random 5-60 secs delay
+    };
+    chrome.storage.session.get("comicData").then(function(data) {
+        if ((Object.keys(data).length === 0) || (data.comicData.fetchDay < time.unixDay)) {
+            console.log("DEBUG: Tab-pinged, comic expired, getting new xkcd...");
+            getXKCD(null, xkcdChecker, time);
+        }
     });
 }
 
-chrome.alarms.onAlarm.addListener((alarm) => {
-    if (alarm.name === "xkcdUpdate") {
-        xkcdUpdate();
-    }
-});
-
-chrome.runtime.onMessage.addListener(() => {xkcdUpdate();});
-
-xkcdUpdate();
-
+chrome.runtime.onMessage.addListener(checkNewXKCD);
+checkNewXKCD();
