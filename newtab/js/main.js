@@ -51,7 +51,15 @@ chrome.storage.session.onChanged.addListener(() => {
     displayXKCD();
 })
 displayXKCD();
-chrome.runtime.sendMessage({}); // send empty message to background so it updates xkcd
+
+// check if new xkcd is needed/expired, if so, ping the background script
+let unixDay = Math.floor(Date.now() / 86400000);
+chrome.storage.session.get("comicData").then(function(data) {
+    if ((Object.keys(data).length === 0) || (data.comicData.fetchDay < unixDay)) {
+        console.log("DEBUG: Comic expired, getting new xkcd...");
+        chrome.runtime.sendMessage({}); // send empty message to background so it updates xkcd
+    }
+});
 
 // permissions button stuff vvvvvvvv
 function permsCheck(clicked=false) {
