@@ -77,19 +77,10 @@ function xkcdChecker(data, time) {
     }, time);
 }
 
-function checkNewXKCD() {
+chrome.runtime.onMessage.addListener(() => {
     // new tab loaded, check if new xkcd is needed
-    let time = {
+    getXKCD(null, xkcdChecker, {
         unixDay: Math.floor(Date.now() / 86400000),
         utcDay: new Date().getUTCDate()
-    };
-    chrome.storage.session.get("comicData").then(function(data) {
-        if ((Object.keys(data).length === 0) || (data.comicData.fetchDay < time.unixDay)) {
-            console.log("DEBUG: Tab-pinged, comic expired, getting new xkcd...");
-            getXKCD(null, xkcdChecker, time);
-        }
     });
-}
-
-chrome.runtime.onMessage.addListener(checkNewXKCD);
-checkNewXKCD();
+});
