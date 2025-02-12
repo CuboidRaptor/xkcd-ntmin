@@ -16,29 +16,29 @@ function imgHeightCheck() {
 }
 
 function displayXKCD() {
-    chrome.storage.local.get("comicData").then(function(data) {
-        if (!data.isEmpty()) {
-            console.log("DEBUG: XKCD display refreshing...");
-            
-            let title = document.getElementById("xkcdtitle");
-            let img = document.getElementById("xkcdimg");
-            let imgDiv = document.getElementById("imgdiv");
-            let link = document.getElementById("xkcdlink");
-            let exlink = document.getElementById("explainxkcdlink");
-            let cData = data.comicData.data;
+    chrome.storage.session.get("comicData").then(function(data) {
+        if (Object.keys(data).length === 0) {
+            console.log("WARNING: Undefined received from chrome.storage.session");
+            return;
+        }
 
-            title.innerHTML = cData.title;
-            imgDiv.classList.remove("divinitial"); // add placeholder box that will be removed when image loads
-            img.src = cData.img;
-            img.title = cData.alt;
-            link.href = `https://xkcd.com/${cData.num}`;
-            link.innerHTML = "xkcd.com";
-            exlink.href = `https://www.explainxkcd.com/wiki/index.php/${cData.num}`;
-            exlink.innerHTML = "explainxkcd";
-        }
-        else {
-            console.log("WARNING: Undefined received from chrome.storage.local");
-        }
+        console.log("DEBUG: XKCD display refreshing...");
+        
+        let title = document.getElementById("xkcdtitle");
+        let img = document.getElementById("xkcdimg");
+        let imgDiv = document.getElementById("imgdiv");
+        let link = document.getElementById("xkcdlink");
+        let exlink = document.getElementById("explainxkcdlink");
+        let cData = data.comicData.data;
+
+        title.innerHTML = cData.title;
+        imgDiv.classList.remove("divinitial"); // add placeholder box that will be removed when image loads
+        img.src = cData.img;
+        img.title = cData.alt;
+        link.href = `https://xkcd.com/${cData.num}`;
+        link.innerHTML = "xkcd.com";
+        exlink.href = `https://www.explainxkcd.com/wiki/index.php/${cData.num}`;
+        exlink.innerHTML = "explainxkcd";
     });
 }
 
@@ -46,11 +46,12 @@ function displayXKCD() {
 window.addEventListener("resize", imgHeightCheck);
 document.getElementById("xkcdimg").addEventListener("load", imgHeightCheck);
 
-chrome.storage.local.onChanged.addListener(() => {
-    console.log("DEBUG: chrome.storage.local change detected, refreshing xkcd display...");
+chrome.storage.session.onChanged.addListener(() => {
+    console.log("DEBUG: chrome.storage.session change detected, refreshing xkcd display...");
     displayXKCD();
 })
 displayXKCD();
+chrome.runtime.sendMessage({}); // send empty message to background so it updates xkcd
 
 // permissions button stuff vvvvvvvv
 function permsCheck(clicked=false) {
