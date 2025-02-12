@@ -70,7 +70,7 @@ function xkcdChecker(data, time) {
         return;
     }
     let comic = randint(time.unixDay, 1, data.num + 1, [1525, 1608, 2916]);
-    //comic = 1732; // override for random comic/debug purposes
+    //comic = 1; // override for random comic/debug purposes
 
     getXKCD(comic, (data, time) => {
         chrome.storage.session.set({comicData: {fetchDay: time.unixDay, data: data}});

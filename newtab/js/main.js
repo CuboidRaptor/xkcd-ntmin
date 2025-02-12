@@ -29,6 +29,7 @@ function displayXKCD() {
         let imgDiv = document.getElementById("imgdiv");
         let link = document.getElementById("xkcdlink");
         let exlink = document.getElementById("explainxkcdlink");
+        let transcriptDiv = document.getElementById("transcript");
         let cData = data.comicData.data;
 
         title.innerHTML = cData.title;
@@ -39,6 +40,7 @@ function displayXKCD() {
         link.innerHTML = "xkcd.com";
         exlink.href = `https://www.explainxkcd.com/wiki/index.php/${cData.num}`;
         exlink.innerHTML = "explainxkcd";
+        transcriptDiv.innerHTML = cData.transcript;
     });
 }
 
