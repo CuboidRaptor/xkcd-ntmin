@@ -69,7 +69,7 @@ function xkcdChecker(data, time) {
         getXKCD(data.num - 1, xkcdChecker, time); // get older and older comics until we can confirm published before today
         return;
     }
-    let comic = randint(time.unixDay, 1, data.num + 1, [1525, 1608, 2916]);
+    let comic = randint(time.unixDay, 1, data.num + 1, [1608, 2916]);
     //comic = 1525; // override for random comic/debug purposes
 
     getXKCD(comic, (data, time) => {
