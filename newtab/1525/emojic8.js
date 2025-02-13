@@ -59,7 +59,7 @@ function change(ev) {
   e = document.createElement("a");
   e.href="https://xkcd.com/1525/" + location.hash
   // code patched to copy instead of visiting link for better embed
-  e.href = "javascript:void(o)";
+  e.href = "javascript:void(0)";
   e.onclick = () => {navigator.clipboard.writeText(`https://xkcd.com/1525/${location.hash}`)};
   // </patch>
   e.appendChild(document.createTextNode('permalink'))
