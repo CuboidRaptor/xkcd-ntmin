@@ -43,9 +43,11 @@ function displayXKCD() {
 
         if (cData.num === 1525) {
             console.log("DEBUG: Comic 1525");
+            emojicFrame.src = "./1525/1525.html";
             emojicFrame.style.display = "block";
         }
         else {
+            emojicFrame.removeAttribute("src");
             emojicFrame.style.display = "none";
             img.src = cData.img;
             img.title = cData.alt;
