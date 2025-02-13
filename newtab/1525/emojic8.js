@@ -58,9 +58,10 @@ function change(ev) {
   permaEl.innerHTML = ''
   e = document.createElement("a");
   e.href="https://xkcd.com/1525/" + location.hash
-  // asdlj
-  e.href="javascript:void(o)"
+  // code patched to copy instead of visiting link for better embed
+  e.href = "javascript:void(o)";
   e.onclick = () => {navigator.clipboard.writeText(`https://xkcd.com/1525/${location.hash}`)};
+  // </patch>
   e.appendChild(document.createTextNode('permalink'))
   permaEl.appendChild(e)
 
