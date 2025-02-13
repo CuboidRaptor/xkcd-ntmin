@@ -34,13 +34,19 @@ function displayXKCD() {
 
         title.innerHTML = cData.title;
         imgDiv.classList.remove("divinitial"); // add placeholder box that will be removed when image loads
-        img.src = cData.img;
-        img.title = cData.alt;
         link.href = `https://xkcd.com/${cData.num}`;
         link.innerHTML = "xkcd.com";
         exlink.href = `https://www.explainxkcd.com/wiki/index.php/${cData.num}`;
         exlink.innerHTML = "explainxkcd";
         transcriptDiv.innerHTML = cData.transcript;
+
+        if (cData.num === 1525) {
+            console.log("DEBUG: Comic 1525");
+        }
+        else {
+            img.src = cData.img;
+            img.title = cData.alt;
+        }
     });
 }
 
