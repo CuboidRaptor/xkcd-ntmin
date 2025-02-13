@@ -30,20 +30,23 @@ function displayXKCD() {
         let link = document.getElementById("xkcdlink");
         let exlink = document.getElementById("explainxkcdlink");
         let transcriptDiv = document.getElementById("transcript");
+        let emojicFrame= document.getElementById("emojicframe");
         let cData = data.comicData.data;
 
         title.innerHTML = cData.title;
-        imgDiv.classList.remove("divinitial"); // add placeholder box that will be removed when image loads
         link.href = `https://xkcd.com/${cData.num}`;
         link.innerHTML = "xkcd.com";
         exlink.href = `https://www.explainxkcd.com/wiki/index.php/${cData.num}`;
         exlink.innerHTML = "explainxkcd";
         transcriptDiv.innerHTML = cData.transcript;
+        imgDiv.classList.remove("divinitial"); // remove placeholder box
 
         if (cData.num === 1525) {
             console.log("DEBUG: Comic 1525");
+            emojicFrame.style.display = "block";
         }
         else {
+            emojicFrame.style.display = "none";
             img.src = cData.img;
             img.title = cData.alt;
         }
