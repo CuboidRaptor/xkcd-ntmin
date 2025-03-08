@@ -69,7 +69,58 @@ function xkcdChecker(data, time) {
         getXKCD(data.num - 1, xkcdChecker, time); // get older and older comics until we can confirm published before today
         return;
     }
-    let comic = randint(time.unixDay, 1, data.num + 1, [1608, 2916]);
+    let comic = randint(time.unixDay, 1, data.num + 1,
+        [
+            1608, // games that I'm too lazy to figure out
+            2916,
+
+            765, // list of weird sex stuff stolen from xkcdsucks
+            751,
+            746,
+            744,
+            717,
+            714,
+            713,
+            708,
+            696,
+            682,
+            674,
+            672,
+            671,
+            658,
+            649,
+            631,
+            604,
+            598,
+            596,
+            592,
+            584,
+            575,
+            563,
+            550,
+            540,
+            532,
+            514,
+            487,
+            474,
+            457,
+            443,
+            414,
+            403,
+            400,
+            355,
+            316,
+            289,
+            276,
+            275,
+            230,
+            136,
+
+            243, // my additions to the sex blocklist
+            300,
+            467,
+        ]
+    );
     //comic = 1525; // override for random comic/debug purposes
 
     getXKCD(comic, (data, time) => {
