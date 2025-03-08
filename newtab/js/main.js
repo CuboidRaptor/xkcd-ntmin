@@ -30,7 +30,7 @@ function displayXKCD() {
         let link = document.getElementById("xkcdlink");
         let exlink = document.getElementById("explainxkcdlink");
         let transcriptDiv = document.getElementById("transcript");
-        let emojicFrame= document.getElementById("emojicframe");
+        let emojicFrame = document.getElementById("emojicframe");
         let cData = data.comicData.data;
 
         title.innerHTML = cData.title;
