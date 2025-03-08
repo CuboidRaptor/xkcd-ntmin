@@ -116,9 +116,12 @@ function xkcdChecker(data, time) {
             230,
             136,
 
-            243, // my additions to the sex blocklist
+            243, // my additions to the sex blocklist (by no means complete)
             300,
             467,
+            858,
+            981,
+            1641
         ]
     );
     //comic = 1525; // override for random comic/debug purposes
