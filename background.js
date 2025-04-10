@@ -73,6 +73,7 @@ function xkcdChecker(data, time) {
         [
             1608, // games that I'm too lazy to figure out
             2916,
+            3074,
 
             765, // list of weird sex stuff stolen from xkcdsucks
             751,
