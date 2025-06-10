@@ -72,6 +72,7 @@ function xkcdChecker(data, time) {
     let comic = randint(time.unixDay, 1, data.num + 1,
         [
             1608, // games that I'm too lazy to figure out
+            2198,
             2916,
             3074,
 
